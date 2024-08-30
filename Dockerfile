@@ -35,15 +35,15 @@ COPY --from=builder /busybox/_install/bin/busybox /
 USER static
 WORKDIR /home/static
 
-# Creates a blank default httpd.conf
+# Uploads a blank default httpd.conf
 # This is only needed in order to set the `-c` argument in this base file
 # and save the developer the need to override the CMD line in case they ever
 # want to use a httpd.conf
-RUN touch httpd.conf
+COPY httpd.conf .
 
 # Copy the static website
 # Use the .dockerignore file to control what ends up inside the image!
-COPY httpd.conf .
+COPY . .
 
 # Run busybox httpd
 CMD ["/busybox", "httpd", "-f", "-v", "-p", "3555", "-c", "httpd.conf"]
